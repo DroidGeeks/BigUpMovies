@@ -3,7 +3,7 @@ A movie application. Get latest, top rated, upcoming and even theater movies alo
 
 # Requirements for building this project
 1.  ROOM – A database for offline persistent
-•	Model – the pojo
+2.  Model – the pojo
 •	Viewmodel – For UI awarenes
 •	ButterKnife – For initializing views
 •	Dagger – For dependency injection
