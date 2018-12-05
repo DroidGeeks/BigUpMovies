@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">BigUp</string>
+    <string name="_7_9">7.9</string>
+    <string name="title_activity_scrolling">Details</string>
+    <string name="title_activity_favourite">Favourites</string>
+    <string name="network_image">no internet access, please try again at a convenient network hour</string>
+    <string name="no_fav_movie">you have no favourite movie</string>
+    <string name="title_activity_youtube">Trailer</string>
+    <string name="search">search...</string>
+    <string name="search_query">search...</string>
+    <string name="sort_option">Sort Option</string>
+    <string name="sort_key">key</string>
+    <string name="sort_summary">movie category</string>
+    <string name="movie_title">Category</string>
+    <string name="pref_header_about">About</string>
+    <string name="summary_about">We are a team of like-minded people, specialized in development of Android App Development creating new trends across the app space. Glad to Help in anyway!</string>
+    <string name="app_version">1.0</string>
+    <string name="summary_support">Got any problem? We are happy to help!</string>
+    <string name="title_send_feedback">Send Feedback</string>
+    <string name="title_faq">FAQ</string>
+    <string name="summary_faq">View frequently asked questions</string>
+    <string name="url_faq">https://github.com/jbankz/</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="url_privacy">https://github.com/jbankz</string>
+    <string name="title_terms">Terms &amp; Conditions</string>
+    <string name="url_terms">https://github.com/jbankz</string>
+    <string name="title_version">Version</string>
+    <string name="choose_email_client">Choose email client</string>
+    <string name="key_send_feedback">key_send_feedback</string>
+    <string name="message">Mode</string>
+    <string name="title">Customisation</string>
+    <string name="send_to">Send To</string>
+    <string name="get_theme_mode">mode</string>
+    <string name="theme_key">theme_key</string>
+    <string name="night">Night mode</string>
+    <string name="day">Day mode</string>
+</resources>

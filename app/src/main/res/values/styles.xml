@@ -1,0 +1,78 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <!-- Light\Day Mode. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimaryLightTheme</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkLight</item>
+        <item name="colorAccent">@color/colorPrimaryAccentLight</item>
+        <item name="backgroundcolor">@color/colorBackgroundColorLightTheme</item>
+        <item name="cardbackground">@color/colorCardLightTheme</item>
+        <item name="textcolor">@color/colorLightThemeTextColor</item>
+        <item name="tintcolor">@color/colorLightThemeTintColor</item>
+        <item name="buttoncolor">@color/colorLightThemeButton</item>
+        <item name="textcolorhead">@color/colorTextColorHeadLightTheme</item>
+        <item name="textcolorheadfeedback">@color/colorTextHeadLightTheme</item>
+        <item name="menuFavColor">@color/colorCardLightTheme</item>
+        <item name="sentiment">@color/colorPrimaryBlack</item>
+        <item name="textcolorlight">@color/colorPrimaryBlack</item>
+    </style>
+
+    <!-- Dark\Day Mode. -->
+    <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimaryDarkTheme</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryBlack</item>
+        <item name="colorAccent">@color/colorPrimaryAccentDark</item>
+        <item name="backgroundcolor">@color/colorBackgroundColorDarkTheme</item>
+        <item name="cardbackground">@color/colorCardDarkTheme</item>
+        <item name="textcolor">@color/colorDarkThemeTextColor</item>
+        <item name="tintcolor">@color/colorDarkThemeTintColor</item>
+        <item name="buttoncolor">@color/colorDarkThemeButton</item>
+        <item name="textcolorhead">@color/colorTextColorHeadDarkTheme</item>
+        <item name="textcolorheadfeedback">@color/colorTextHeadDarkTheme</item>
+        <item name="menuFavColor">@color/colorPrimaryAccentLight</item>
+        <item name="sentiment">@color/colorDarkThemeTintColor</item>
+        <item name="textcolorlight">@color/colorDarkThemeTintColor</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="DarkTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!--Details Activity Light Style-->
+
+    <!--Details Actiity Dark Style-->
+    <style name="ScrollDarkTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimaryDarkTheme</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryBlack</item>
+        <item name="colorAccent">@color/colorPrimaryAccentDark</item>
+        <item name="backgroundcolor">@color/colorBackgroundColorDarkTheme</item>
+        <item name="cardbackground">@color/colorCardDarkTheme</item>
+        <item name="textcolor">@color/colorDarkThemeTextColor</item>
+        <item name="tintcolor">@color/colorDarkThemeTintColor</item>
+        <item name="buttoncolor">@color/colorDarkThemeButton</item>
+        <item name="textcolorhead">@color/colorTextColorHeadDarkTheme</item>
+        <item name="textcolorheadfeedback">@color/colorTextHeadDarkTheme</item>
+
+
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

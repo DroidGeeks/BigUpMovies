@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2192F3</color>
+    <color name="colorPrimaryDark">#1978D2</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="cardBackGround">#efefef</color>
+
+    <!--Color for Light Theme-->
+    <color name="colorPrimaryLightTheme">#2196F3</color>
+    <color name="colorPrimaryDarkLight">#1976D2</color>
+    <color name="colorPrimaryAccentLight">@color/colorAccent</color>
+    <color name="colorBackgroundColorLightTheme">#fcfcfc</color>
+    <color name="colorCardLightTheme">#ffffff</color>
+    <color name="colorLightThemeTextColor">#808080</color>
+    <color name="colorLightThemeTintColor">#000000</color>
+    <color name="colorLightThemeButton">#2196F3</color>
+    <color name="colorTextColorHeadLightTheme">@color/colorAccent</color>
+    <color name="colorTextHeadLightTheme">#000000</color>
+
+    <!--Color for Dark Theme-->
+    <color name="colorPrimaryDarkTheme">#212121</color>
+    <color name="colorPrimaryBlack">#000000</color>
+    <color name="colorPrimaryAccentDark">#00BFBF</color>
+    <color name="colorBackgroundColorDarkTheme">#303030</color>
+    <color name="colorCardDarkTheme">#424242</color>
+    <color name="colorDarkThemeTextColor">#ffffff</color>
+    <color name="colorDarkThemeTintColor">#ffffff</color>
+    <color name="colorDarkThemeButton">#2196F3</color>
+    <color name="colorTextColorHeadDarkTheme">#005ad1</color>
+    <color name="colorTextHeadDarkTheme">#ffffff</color>
+
+</resources>
