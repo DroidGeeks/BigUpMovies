@@ -2,6 +2,7 @@
 A movie application. Get latest, top rated, upcoming and even theater movies along side there ratings and reviews etc.
 
 # Requirements for building this project
+
 •	ROOM – A database for offline persistent
 •	Model – the pojo
 •	Viewmodel – For UI awarenes
