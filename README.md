@@ -4,29 +4,30 @@ A movie application. Get latest, top rated, upcoming and even theater movies alo
 # Requirements for building this project
 1.  ROOM – A database for offline persistent
 2.  Model – the pojo
-•	Viewmodel – For UI awarenes
-•	ButterKnife – For initializing views
-•	Dagger – For dependency injection
-•	Retrofit – For networking
-•	ButterKnife – For initializing views
-•	YoutubeApi – For playing movie trailers
+3.  Viewmodel – For UI awarenes
+4.  ButterKnife – For initializing views
+5.  Dagger – For dependency injection
+6.  Retrofit – For networking
+7.	ButterKnife – For initializing views
+8.  YoutubeApi – For playing movie trailers
 
 # Features
-• Sort movies according to user preference (Popular, Top Rated, Theatre or even Up coming movies)
-• Get movie Casts
-• Change theme mode according to user taste(Day and Night)
-• Favourite a movie
-• Search for a movie
-• Play a movie (Trailers)
+1.  Sort movies according to user preference (Popular, Top Rated, Theatre or even Up coming movies)
+2.  Get movie Casts
+3.  Change theme mode according to user taste(Day and Night)
+4.  Favourite a movie
+5.  Search for a movie
+6.  Play a movie (Trailers)
 
 # Future Updates
-• Get details of movie casts biography
-• Download Trailer
+1.  Get details of movie casts biography
+1.  Download Trailer
 
 # Prerequisites
 In other to finish build this, you’ll need the following 
 1.	A computer (Laptop or Desktop) 
 2.	Android studios 3.0 up to the latest
+
 
 
 Note: This application is still under progress, but i hope to get u a better update soon.
