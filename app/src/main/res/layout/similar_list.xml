@@ -17,7 +17,7 @@
         android:layout_marginRight="8dp"
         android:maxEms="8"
         android:maxLines="2"
-        android:text="Similar"
+        android:text="Similar Movies"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
         android:textColor="?attr/textcolor"
         android:textStyle="bold"

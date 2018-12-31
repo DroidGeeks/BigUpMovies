@@ -8,7 +8,9 @@ import bankzworld.movies.activity.MainActivity;
 import bankzworld.movies.activity.ReviewActivity;
 import bankzworld.movies.activity.SettingsActivity;
 import bankzworld.movies.activity.YoutubeActivity;
+import bankzworld.movies.adapter.CastAdapter;
 import bankzworld.movies.fragment.MainPreferenceFragment;
+import bankzworld.movies.fragment.PopularFragment;
 import bankzworld.movies.viewmodel.MoviesCategoryViewmodel;
 import bankzworld.movies.viewmodel.ReviewViewmodel;
 import bankzworld.movies.viewmodel.TrailerViewModel;
@@ -39,5 +41,9 @@ public interface AppComponent {
     void inject(ReviewViewmodel reviewViewmodel);
 
     void inject(ReviewActivity reviewActivity);
+
+    void inject(CastAdapter castAdapter);
+
+    void inject(PopularFragment popularFragment);
 
 }

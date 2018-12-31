@@ -16,7 +16,7 @@
         android:layout_marginRight="8dp"
         android:maxEms="8"
         android:maxLines="2"
-        android:text="Casts"
+        android:text="Movie Casts"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
         android:textColor="?attr/textcolor"
         android:textStyle="bold"
