@@ -24,10 +24,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ import static bankzworld.movies.util.Config.BACKDROP_PATH;
 public class DetailsActivity extends AppCompatActivity implements TrailerListeners, SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = "DetailsActivity";
     @BindView(R.id.back_drop)
-    ImageView mBackDrop;
+    KenBurnsView mBackDrop;
     @BindView(R.id.text_show_rating)
     TextView mRating;
     @BindView(R.id.text_show_date)
@@ -127,11 +127,6 @@ public class DetailsActivity extends AppCompatActivity implements TrailerListene
             results = resultsArrayList.get(i);
         }
 
-        // BEGIN_INCLUDE(detail_set_view_name)
-        ViewCompat.setTransitionName(mBackDrop, "image");
-        ViewCompat.setTransitionName(mRating, "rating");
-        // END_INCLUDE(detail_set_view_name)
-
         mOverView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,6 +146,7 @@ public class DetailsActivity extends AppCompatActivity implements TrailerListene
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.error_image_placeholder)
                 .into(mBackDrop);
+
 
         animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_clockwise);
         animation2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_anti_clockwise);

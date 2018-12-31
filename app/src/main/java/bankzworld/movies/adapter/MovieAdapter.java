@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,11 +87,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             Intent intent = new Intent(context, DetailsActivity.class);
             Results data = resultsList.get(getLayoutPosition());
             intent.putExtra("data", data);
-            ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    mContext,
-                    new Pair<>(view.findViewById(R.id.poster_image), "image"),
-                    new Pair<>(view.findViewById(R.id.text_rating), "rating"));
-            ActivityCompat.startActivity(context, intent, activityOptions.toBundle());
+            mContext.startActivity(intent);
+            mContext.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
     }
 }
