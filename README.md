@@ -18,6 +18,7 @@ A movie application. Get latest, top rated, upcoming and even theater movies alo
 4.  Favourite a movie
 5.  Search for a movie
 6.  Play a movie (Trailers)
+7.  Download trailers
 
 # Prerequisites
 In other to finish build this, you’ll need the following 
