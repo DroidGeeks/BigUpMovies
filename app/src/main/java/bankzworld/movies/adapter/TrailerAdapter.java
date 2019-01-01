@@ -2,8 +2,10 @@ package bankzworld.movies.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.List;
 
 import bankzworld.movies.R;
+import bankzworld.movies.activity.TrailerDownloader;
 import bankzworld.movies.activity.YoutubeActivity;
 import bankzworld.movies.pojo.TrailerResult;
 import butterknife.BindView;
@@ -82,11 +85,32 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         @Override
         public void onClick(View view) {
             Context context = view.getContext();
-            Intent intent = new Intent(context, YoutubeActivity.class);
-            TrailerResult key = trailerResults.get(getLayoutPosition());
-            intent.putExtra("key", key);
-            mContext.startActivity(intent);
-            mContext.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            selection(context);
         }
+
+        private void selection(final Context context) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("Do you wish to watch this trailer or download it for later view");
+            builder.setPositiveButton("Play Trailer", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Intent intent = new Intent(context, YoutubeActivity.class);
+                    TrailerResult key = trailerResults.get(getLayoutPosition());
+                    intent.putExtra("key", key);
+                    mContext.startActivity(intent);
+                    mContext.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                }
+            });
+            builder.setNegativeButton("Download Trailer", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Intent intent = new Intent(context, TrailerDownloader.class);
+                    TrailerResult key = trailerResults.get(getLayoutPosition());
+                    intent.putExtra("key", key);
+                    mContext.startActivity(intent);
+                    mContext.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                }
+            });
+            builder.show();
+        }
+
     }
 }

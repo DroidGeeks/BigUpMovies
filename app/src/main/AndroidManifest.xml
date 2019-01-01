@@ -58,10 +58,11 @@
             android:name=".activity.SettingsActivity"
             android:label="Settings"
             android:parentActivityName=".activity.MainActivity" />
-
         <activity
             android:name=".activity.ReviewActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity android:name=".activity.TrailerDownloader"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
