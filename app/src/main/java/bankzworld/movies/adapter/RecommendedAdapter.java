@@ -57,7 +57,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
 
         Glide.with(mContext).load(POSTER_PATH + resultsList.get(position).getPosterPath())
                 .apply(new RequestOptions()
-                        .placeholder(R.drawable.cast_profile_error)
+                        .placeholder(R.drawable.placeholder)
                         .error(R.drawable.cast_profile_placeholder))
                 .into(holder.mPoster);
 
