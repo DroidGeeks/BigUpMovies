@@ -7,6 +7,7 @@ import bankzworld.movies.activity.FavouriteActivity;
 import bankzworld.movies.activity.MainActivity;
 import bankzworld.movies.activity.ReviewActivity;
 import bankzworld.movies.activity.SettingsActivity;
+import bankzworld.movies.activity.TrailerDownloader;
 import bankzworld.movies.activity.YoutubeActivity;
 import bankzworld.movies.adapter.CastAdapter;
 import bankzworld.movies.fragment.MainPreferenceFragment;
@@ -54,5 +55,7 @@ public interface AppComponent {
     void inject(TopRatedFragment topRatedFragment);
 
     void inject(UpcomingFragment upcomingFragment);
+
+    void inject(TrailerDownloader trailerDownloader);
 
 }
