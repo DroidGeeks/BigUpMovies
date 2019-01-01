@@ -90,7 +90,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
         private void selection(final Context context) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("Do you wish to watch this trailer or download it for later view");
+            builder.setMessage("Do you wish to watch this trailer or download it for later view?");
             builder.setPositiveButton("Play Trailer", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     Intent intent = new Intent(context, YoutubeActivity.class);
