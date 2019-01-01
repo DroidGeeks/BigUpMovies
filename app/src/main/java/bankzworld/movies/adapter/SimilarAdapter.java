@@ -17,7 +17,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -53,10 +54,10 @@ public class SimilarAdapter extends RecyclerView.Adapter<SimilarAdapter.SimilarV
     @Override
     public void onBindViewHolder(@NonNull SimilarViewholdr holder, int position) {
         holder.mName.setText(resultsList.get(position).getOriginalTitle());
-        Picasso.get()
-                .load(POSTER_PATH + resultsList.get(position).getPosterPath())
-                .error(R.drawable.error_image_placeholder)
-                .placeholder(R.drawable.placeholder)
+
+        Glide.with(mContext).load(POSTER_PATH + resultsList.get(position)
+                .getPosterPath())
+                .apply(new RequestOptions().placeholder(R.drawable.placeholder).error(R.drawable.error_image_placeholder))
                 .into(holder.mPoster);
 
         // sets an animation for the recyclerView

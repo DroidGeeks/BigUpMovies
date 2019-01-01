@@ -12,7 +12,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -47,10 +48,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     @Override
     public void onBindViewHolder(@NonNull TrailerViewHolder holder, int position) {
-        Picasso.get()
-                .load(YOU_TUBE_BASE_URL + trailerResults.get(position).getKey() + "/0.jpg")
-                .placeholder(R.drawable.trailer_placeholder)
-                .error(R.drawable.error_image_placeholder)
+
+        Glide.with(mContext).load(YOU_TUBE_BASE_URL + trailerResults.get(position).getKey() + "/0.jpg")
+                .apply(new RequestOptions().placeholder(R.drawable.trailer_placeholder).error(R.drawable.error_image_placeholder))
                 .into(holder.mTrailerPoster);
 
         // sets an animation for the recyclerView

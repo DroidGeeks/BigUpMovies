@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -32,6 +34,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import static bankzworld.movies.util.Config.API_KEY;
+import static bankzworld.movies.util.Config.POSTER_PATH;
 import static bankzworld.movies.util.Config.PROFILE_PATH;
 
 
@@ -70,11 +73,13 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
     public void onBindViewHolder(@NonNull CastViewHolder holder, int position) {
         holder.mCastName.setText(castsList.get(position).getName());
         holder.mCastAsName.setText(castsList.get(position).getCharacter());
-        Picasso.get()
-                .load(PROFILE_PATH + castsList.get(position).getProfilePath())
-                .error(R.drawable.cast_profile_error)
-                .placeholder(R.drawable.cast_profile_placeholder)
+
+        Glide.with(mContext).load(PROFILE_PATH + castsList.get(position).getProfilePath())
+                .apply(new RequestOptions()
+                        .placeholder(R.drawable.cast_profile_error)
+                        .error(R.drawable.cast_profile_placeholder))
                 .into(holder.mCastImage);
+
     }
 
     @Override
@@ -102,7 +107,12 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
         final TextView mBiography = character_layout.findViewById(R.id.txt_biography);
         final TextView mKnownAs = character_layout.findViewById(R.id.known_as);
 
-        Picasso.get().load(PROFILE_PATH + poster).placeholder(R.drawable.placeholder).into(circleImageView);
+        Glide.with(mContext).load(PROFILE_PATH + poster)
+                .apply(new RequestOptions()
+                        .placeholder(R.drawable.placeholder)
+                        .error(R.drawable.error_image_placeholder))
+                .into(circleImageView);
+
         mActor.setText("Name: " + name);
         mBday.setText("Birth: " + birthday);
         mDeath.setText("Death: " + String.valueOf(deathday));

@@ -17,7 +17,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static bankzworld.movies.util.Config.POSTER_PATH;
+import static bankzworld.movies.util.Config.PROFILE_PATH;
 
 public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.RecommendedViewHolder> {
 
@@ -53,10 +55,10 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
         holder.mName.setText(resultsList.get(position).getOriginalTitle());
         holder.mRating.setText(resultsList.get(position).getVoteAverage().toString());
 
-        Picasso.get()
-                .load(POSTER_PATH + resultsList.get(position).getPosterPath())
-                .error(R.drawable.error_image_placeholder)
-                .placeholder(R.drawable.placeholder)
+        Glide.with(mContext).load(POSTER_PATH + resultsList.get(position).getPosterPath())
+                .apply(new RequestOptions()
+                        .placeholder(R.drawable.cast_profile_error)
+                        .error(R.drawable.cast_profile_placeholder))
                 .into(holder.mPoster);
 
         // sets an animation for the recyclerView

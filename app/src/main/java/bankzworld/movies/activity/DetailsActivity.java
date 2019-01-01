@@ -10,7 +10,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,8 +26,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.flaviofaria.kenburnsview.KenBurnsView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,11 +140,9 @@ public class DetailsActivity extends AppCompatActivity implements TrailerListene
         this.setTitle(results.getOriginalTitle());
         mRating.setText(results.getVoteAverage().toString());
         mReleasedDate.setText(results.getReleaseDate());
-
-        Picasso.get()
-                .load(BACKDROP_PATH + results.getBackdropPath())
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.error_image_placeholder)
+        
+        Glide.with(this).load(BACKDROP_PATH + results.getBackdropPath())
+                .apply(new RequestOptions().placeholder(R.drawable.placeholder).error(R.drawable.error_image_placeholder))
                 .into(mBackDrop);
 
 
