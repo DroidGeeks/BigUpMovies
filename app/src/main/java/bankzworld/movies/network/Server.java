@@ -10,11 +10,15 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface Server {
 
     @GET("movie/{movie}")
-    Call<Responses> getMovies(@Path("movie") String movie, @Query("api_key") String api_key);
+    Call<Responses> getMovies(@Path("movie") String movie, @Query("api_key") String api_key, @Query("page=") int page);
+
+    @GET
+    Call<Responses> getPaginationMovies(@Url String url);
 
     @GET("search/movie")
     Call<Responses> getSearchedMovie(@Query("api_key") String api_key, @Query("query") String name);

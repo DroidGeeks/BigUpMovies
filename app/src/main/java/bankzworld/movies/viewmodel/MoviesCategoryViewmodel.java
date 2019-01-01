@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import bankzworld.movies.injection.DaggerApplication;
 import bankzworld.movies.listeners.NetworkResponseListeners;
+import bankzworld.movies.network.PaginationClient;
 import bankzworld.movies.network.Server;
 import bankzworld.movies.pojo.Responses;
 import bankzworld.movies.util.Config;
@@ -16,6 +17,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+import static bankzworld.movies.util.Config.API_KEY;
 
 public class MoviesCategoryViewmodel extends AndroidViewModel {
     private static final String TAG = "MoviesCategoryViewmodel";
@@ -36,17 +39,17 @@ public class MoviesCategoryViewmodel extends AndroidViewModel {
     }
 
 
-    public void getMovies(String movie) {
+    public void getMovies(String movie, int page) {
         networkResponseListeners.showProgress();
         server = retrofit.create(Server.class);
-        server.getMovies(movie, Config.API_KEY).enqueue(new Callback<Responses>() {
+        server.getPaginationMovies(PaginationClient.getClient(movie, API_KEY, page)).enqueue(new Callback<Responses>() {
             @Override
             public void onResponse(Call<Responses> call, Response<Responses> response) {
                 Log.i(TAG, "onResponse: " + response.raw());
                 if (response.isSuccessful()) {
                     networkResponseListeners.passData(response.body().getResults());
                     networkResponseListeners.hideProgress();
-                }else{
+                } else {
                     networkResponseListeners.hideProgress();
                 }
             }
@@ -70,7 +73,7 @@ public class MoviesCategoryViewmodel extends AndroidViewModel {
                 if (response.isSuccessful()) {
                     networkResponseListeners.passData(response.body().getResults());
                     networkResponseListeners.hideProgress();
-                }else{
+                } else {
                     networkResponseListeners.hideProgress();
                 }
             }

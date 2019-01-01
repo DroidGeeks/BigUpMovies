@@ -11,6 +11,9 @@ import bankzworld.movies.activity.YoutubeActivity;
 import bankzworld.movies.adapter.CastAdapter;
 import bankzworld.movies.fragment.MainPreferenceFragment;
 import bankzworld.movies.fragment.PopularFragment;
+import bankzworld.movies.fragment.TheatreFragment;
+import bankzworld.movies.fragment.TopRatedFragment;
+import bankzworld.movies.fragment.UpcomingFragment;
 import bankzworld.movies.viewmodel.MoviesCategoryViewmodel;
 import bankzworld.movies.viewmodel.ReviewViewmodel;
 import bankzworld.movies.viewmodel.TrailerViewModel;
@@ -45,5 +48,11 @@ public interface AppComponent {
     void inject(CastAdapter castAdapter);
 
     void inject(PopularFragment popularFragment);
+
+    void inject(TheatreFragment theatreFragment);
+
+    void inject(TopRatedFragment topRatedFragment);
+
+    void inject(UpcomingFragment upcomingFragment);
 
 }

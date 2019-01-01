@@ -8,12 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -47,19 +46,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(@NonNull final MovieViewHolder holder, final int position) {
         holder.mRating.setText(resultsList.get(position).getVoteAverage().toString());
-        Picasso.get()
-                .load(POSTER_PATH + resultsList.get(position).getPosterPath())
-                .error(R.drawable.error_image_placeholder)
-                .placeholder(R.drawable.placeholder)
+
+        Glide.with(mContext).load(POSTER_PATH + resultsList.get(position)
+                .getPosterPath())
+                .apply(new RequestOptions().placeholder(R.drawable.placeholder).error(R.drawable.error_image_placeholder))
                 .into(holder.mPoster);
-        // sets an animation for the recyclerView
-        Animation animation = AnimationUtils.loadAnimation(mContext,
-                (position > lastPosition) ? R.anim.up
-                        : R.anim.down);
-        holder.itemView.startAnimation(animation);
-        lastPosition = position;
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -90,5 +84,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             mContext.startActivity(intent);
             mContext.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
+    }
+
+    public void addMovies(List<Results> resultsList) {
+        for (Results results : resultsList) {
+            this.resultsList.add(results);
+        }
+        notifyDataSetChanged();
     }
 }
