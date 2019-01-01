@@ -8,7 +8,7 @@ A movie application. Get latest, top rated, upcoming and even theater movies alo
 4.  ButterKnife – For initializing views
 5.  Dagger – For dependency injection
 6.  Retrofit – For networking
-7.	ButterKnife – For initializing views
+7.	ButterKnife – For views binding
 8.  YoutubeApi – For playing movie trailers
 
 # Features
@@ -19,16 +19,12 @@ A movie application. Get latest, top rated, upcoming and even theater movies alo
 5.  Search for a movie
 6.  Play a movie (Trailers)
 
-# Future Updates
-1.  Get details of movie casts biography
-1.  Download Trailer
-
 # Prerequisites
 In other to finish build this, you’ll need the following 
 1.	A computer (Laptop or Desktop) 
 2.	Android studios 3.0 up to the latest
 
-
-
 Note: This application is still under progress, but i hope to get u a better update soon.
 follow to get notified when a new commit is been updated.
+
+ps: Don't forget to star this project so it can be easily found by other developers.
