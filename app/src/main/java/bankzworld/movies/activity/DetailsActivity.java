@@ -56,7 +56,14 @@ import static bankzworld.movies.util.Config.BACKDROP_PATH;
 
 
 public class DetailsActivity extends AppCompatActivity implements TrailerListeners, SwipeRefreshLayout.OnRefreshListener {
+
     private static final String TAG = "DetailsActivity";
+
+    @Inject
+    MovieDatabase movieDatabase;
+    @Inject
+    SharedPreferences preferences;
+
     @BindView(R.id.back_drop)
     KenBurnsView mBackDrop;
     @BindView(R.id.text_show_rating)
@@ -82,12 +89,6 @@ public class DetailsActivity extends AppCompatActivity implements TrailerListene
     private Results results;
     private Animation animation, animation2;
     private boolean ifFound = false;
-
-    @Inject
-    MovieDatabase movieDatabase;
-    @Inject
-    SharedPreferences preferences;
-
     private List<Results> resultsArrayList = new ArrayList<>();
 
     @Override
@@ -102,13 +103,12 @@ public class DetailsActivity extends AppCompatActivity implements TrailerListene
         }
 
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_scrolling);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // binds views
         ButterKnife.bind(this);
 
         mRefresh.setColorScheme(R.color.colorPrimaryDark, R.color.colorPrimary, R.color.colorAccent);
@@ -134,17 +134,9 @@ public class DetailsActivity extends AppCompatActivity implements TrailerListene
             }
         });
 
-        // get other details of the movie
-        getOtherDetails();
-
         this.setTitle(results.getOriginalTitle());
         mRating.setText(results.getVoteAverage().toString());
         mReleasedDate.setText(results.getReleaseDate());
-        
-        Glide.with(this).load(BACKDROP_PATH + results.getBackdropPath())
-                .apply(new RequestOptions().placeholder(R.drawable.placeholder).error(R.drawable.error_image_placeholder))
-                .into(mBackDrop);
-
 
         animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_clockwise);
         animation2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_anti_clockwise);
@@ -157,31 +149,36 @@ public class DetailsActivity extends AppCompatActivity implements TrailerListene
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // sets backdrop image
+        Glide.with(this).load(BACKDROP_PATH + results.getBackdropPath())
+                .apply(new RequestOptions().placeholder(R.drawable.placeholder).error(R.drawable.error_image_placeholder))
+                .into(mBackDrop);
+        // get other details of the movie
+        getOtherDetails();
+    }
 
+    /*
+        checks for if item exists before adding up to database or remove from data
+    */
     private void checkFavouritism() {
         if (ifFound) {
-            removeFromFavourite();
+            getItems();
         } else {
             insertToFavourite();
         }
     }
 
+    /*Gets all movie details*/
     private void getOtherDetails() {
         trailerViewModel = ViewModelProviders.of(this).get(TrailerViewModel.class);
-        AppExecutor.getsInstance().getDiskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        trailerViewModel.setTrailerListeners(DetailsActivity.this);
-                        trailerViewModel.getTrailers(results.getId().toString(), API_KEY);
-                    }
-                });
-            }
-        });
+        trailerViewModel.setTrailerListeners(DetailsActivity.this);
+        trailerViewModel.getTrailers(results.getId().toString(), API_KEY);
     }
 
+    /*Checks if movie exists*/
     private void isExist() {
         AppExecutor.getsInstance().getDiskIO().execute(new Runnable() {
             @Override
@@ -234,10 +231,11 @@ public class DetailsActivity extends AppCompatActivity implements TrailerListene
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    /* displays dialog
+     */
     private void showOverViewDialog(int layout, String overview) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -260,6 +258,8 @@ public class DetailsActivity extends AppCompatActivity implements TrailerListene
         builder.show();
     }
 
+    /*  initialises recycler view
+     */
     private void initRecyclerViews() {
         mTrailerList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mTrailerList.setItemAnimator(new DefaultItemAnimator());
@@ -296,8 +296,36 @@ public class DetailsActivity extends AppCompatActivity implements TrailerListene
         }
     }
 
+    /*    gets list of items from the database
+     */
+    private void getItems() {
+        AppExecutor.getsInstance().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                final LiveData<List<Results>> resultsList = movieDatabase.movieDao().retrieveMovies();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        resultsList.observe(DetailsActivity.this, new Observer<List<Results>>() {
+                            @Override
+                            public void onChanged(@Nullable List<Results> resultsList) {
+                                if (!resultsList.isEmpty()) {
+                                    for (int i = 0; i < resultsList.size(); i++) {
+                                        results = resultsList.get(i);
+                                        removeFromFavourite(results);
+                                    }
+                                }
+                            }
+                        });
 
-    private void removeFromFavourite() {
+                    }
+                });
+            }
+        });
+    }
+
+    /*remove the item from database*/
+    private void removeFromFavourite(final Results results) {
         AppExecutor.getsInstance().getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -314,6 +342,7 @@ public class DetailsActivity extends AppCompatActivity implements TrailerListene
         });
     }
 
+    /*Insert to database*/
     private void insertToFavourite() {
         AppExecutor.getsInstance().getDiskIO().execute(new Runnable() {
             @Override
@@ -331,6 +360,7 @@ public class DetailsActivity extends AppCompatActivity implements TrailerListene
         });
     }
 
+    /*share intent*/
     private void shareIntent() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -383,15 +413,8 @@ public class DetailsActivity extends AppCompatActivity implements TrailerListene
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        //  overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-
         // checks if the item already exists int the database
         isExist();
     }
