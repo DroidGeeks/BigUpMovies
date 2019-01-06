@@ -28,7 +28,7 @@
                 app:contentScrim="?attr/colorPrimary"
                 app:toolbarId="@+id/toolbar">
 
-                <ImageView
+                <com.flaviofaria.kenburnsview.KenBurnsView
                     android:id="@+id/back_drop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
