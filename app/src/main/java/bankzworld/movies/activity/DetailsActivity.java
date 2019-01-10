@@ -309,11 +309,8 @@ public class DetailsActivity extends AppCompatActivity implements TrailerListene
                         resultsList.observe(DetailsActivity.this, new Observer<List<Results>>() {
                             @Override
                             public void onChanged(@Nullable List<Results> resultsList) {
-                                if (!resultsList.isEmpty()) {
-                                    for (int i = 0; i < resultsList.size(); i++) {
-                                        results = resultsList.get(i);
-                                        removeFromFavourite(results);
-                                    }
+                                if (!resultsList.isEmpty() && resultsList.contains(results.getId())) {
+                                    removeFromFavourite(results);
                                 }
                             }
                         });
