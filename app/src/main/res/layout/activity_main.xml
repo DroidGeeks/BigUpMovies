@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe"
     android:layout_width="match_parent"
-    android:background="?attr/backgroundcolor"
     android:layout_height="match_parent"
+    android:background="?attr/backgroundcolor"
     tools:context=".activity.MainActivity">
 
     <FrameLayout
@@ -16,8 +16,20 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/spin_kit"
+            style="@style/SpinKitView.Small.FadingCircle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:visibility="visible"
+            app:SpinKit_Color="@color/colorAccent" />
 
     </FrameLayout>
+
 
 </android.support.v4.widget.SwipeRefreshLayout>

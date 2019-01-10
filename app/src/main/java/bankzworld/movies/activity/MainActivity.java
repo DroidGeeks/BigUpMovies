@@ -21,6 +21,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.ybq.android.spinkit.SpinKitView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements NetworkResponseLi
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.network_layout)
     ConstraintLayout networkLayout;
+    @BindView(R.id.spin_kit)
+    SpinKitView mSpinKitView;
 
     MoviesCategoryViewmodel moviesCategoryViewmodel;
     List<Results> resultsList = new ArrayList<>();
@@ -327,6 +331,7 @@ public class MainActivity extends AppCompatActivity implements NetworkResponseLi
     }
 
     private void pagination(String movie) {
+        mSpinKitView.setVisibility(View.VISIBLE);
         server.getPaginationMovies(PaginationClient.getClient(movie, API_KEY, pageNumber)).enqueue(new Callback<Responses>() {
             @Override
             public void onResponse(Call<Responses> call, Response<Responses> response) {
@@ -337,11 +342,13 @@ public class MainActivity extends AppCompatActivity implements NetworkResponseLi
                 } else {
                     Toast.makeText(MainActivity.this, "No more movies to display", Toast.LENGTH_SHORT).show();
                 }
+                mSpinKitView.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onFailure(Call<Responses> call, Throwable t) {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                mSpinKitView.setVisibility(View.INVISIBLE);
             }
         });
     }
