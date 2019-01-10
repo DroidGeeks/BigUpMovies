@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "896016607233",
+    "firebase_url": "https://bigupmovies-ff062.firebaseio.com",
+    "project_id": "bigupmovies-ff062",
+    "storage_bucket": "bigupmovies-ff062.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:896016607233:android:71161a21494ccf7e",
+        "android_client_info": {
+          "package_name": "bankzworld.movies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "896016607233-3pefgefu6i3a3dt3grclg5erbd3flkm0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "bankzworld.movies",
+            "certificate_hash": "24964bc9430958cdeefab3e7e51be0d9128930c4"
+          }
+        },
+        {
+          "client_id": "896016607233-llumga1ntltr9c2kni7iun32c9psfubm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYY68D2KFXkoZjyCi9IpatGsHDnqD6St4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "896016607233-llumga1ntltr9c2kni7iun32c9psfubm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -38,14 +38,15 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:1.1.1"
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
 
-    // animation
-    implementation 'com.github.jd-alexander:LikeButton:0.2.3'
-
     // dagger libraries
     implementation "com.google.dagger:dagger-android-support:2.16"
     implementation "com.google.dagger:dagger:2.19"
     annotationProcessor "com.google.dagger:dagger-compiler:2.16"
     compileOnly 'javax.annotation:jsr250-api:1.0'
+
+    // firebase
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
 
     // retrofit
     implementation 'com.google.code.gson:gson:2.8.5'
@@ -69,7 +70,7 @@ dependencies {
 
     // youtube api
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
-
+    // for background executions
     implementation 'com.github.jbankz:AppExecutor:v1.0'
-
 }
+apply plugin: 'com.google.gms.google-services'
