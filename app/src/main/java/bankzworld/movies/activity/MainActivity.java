@@ -130,6 +130,11 @@ public class MainActivity extends AppCompatActivity implements NetworkResponseLi
 
             }
         });
+        
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        }
 
     }
 
