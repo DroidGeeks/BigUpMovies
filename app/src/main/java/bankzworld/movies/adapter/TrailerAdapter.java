@@ -1,31 +1,46 @@
 package bankzworld.movies.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
+import at.huber.youtubeExtractor.VideoMeta;
+import at.huber.youtubeExtractor.YouTubeExtractor;
+import at.huber.youtubeExtractor.YtFile;
 import bankzworld.movies.R;
+import bankzworld.movies.activity.DetailsActivity;
 import bankzworld.movies.activity.TrailerDownloader;
 import bankzworld.movies.activity.YoutubeActivity;
 import bankzworld.movies.pojo.TrailerResult;
+import bankzworld.movies.util.Config;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.content.Context.DOWNLOAD_SERVICE;
+import static bankzworld.movies.util.Config.DlFolder;
 import static bankzworld.movies.util.Config.YOU_TUBE_BASE_URL;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerViewHolder> {
@@ -102,14 +117,84 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
             });
             builder.setNegativeButton("Download Trailer", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    Intent intent = new Intent(context, TrailerDownloader.class);
+
                     TrailerResult key = trailerResults.get(getLayoutPosition());
-                    intent.putExtra("key", key);
-                    mContext.startActivity(intent);
-                    mContext.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    String link = "https://www.youtube.com/watch?v="+key.getKey();
+
+                    Log.i("YTLINK", link);
+                    String name = key.getName();
+                    downloadTrailer(link, name);
+
+
+
+//                    Intent intent = new Intent(context, TrailerDownloader.class);
+//
+//                    intent.putExtra("key", key);
+//                    mContext.startActivity(intent);
+//                    mContext.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
             });
             builder.show();
+        }
+
+
+        //------------------------Download a Video Trailer----------------------//
+
+        public void downloadTrailer(String url, final String name){
+            @SuppressLint("StaticFieldLeak") YouTubeExtractor mExtractor = new YouTubeExtractor(mContext) {
+                @Override
+                protected void onExtractionComplete(SparseArray<YtFile> sparseArray, VideoMeta videoMeta) {
+                    if (sparseArray != null) {
+
+                        List<Integer> iTags = Arrays.asList(22, 137, 18, 17);
+
+                        for (Integer iTag : iTags) {
+
+                            YtFile ytFile = sparseArray.get(iTag);
+
+                            if (ytFile != null) {
+
+                                String downloadUrl = ytFile.getUrl();
+
+                                if (downloadUrl != null && !downloadUrl.isEmpty()) {
+
+                                    Uri youtubeUri = Uri.parse(downloadUrl);
+
+                                    File root = new File(DlFolder);
+                                    if (!root.exists()) {
+                                        root.mkdirs();
+                                    }
+
+                                    String t = name+"Trailer";
+
+                                    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(String.valueOf(youtubeUri)));
+                                    request.setDescription("Downloading "+ t);
+                                    request.setTitle("BigUp");
+                                    request.allowScanningByMediaScanner();
+                                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                                    String filename = t;
+
+
+                                    request.setDestinationInExternalPublicDir("/BigUp/", filename + ".mp4");
+
+                                    DownloadManager manager = (DownloadManager) mContext.getSystemService(DOWNLOAD_SERVICE);
+                                    manager.enqueue(request);
+                                    Toast.makeText(mContext, "Downloading...", Toast.LENGTH_SHORT).show();
+                                    return;
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+                }
+            };
+
+            mExtractor.extract(url, true, true);
+
+
         }
 
     }

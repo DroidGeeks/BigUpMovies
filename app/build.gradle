@@ -72,5 +72,8 @@ dependencies {
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     // for background executions
     implementation 'com.github.jbankz:AppExecutor:v1.0'
+    
+    // Youtube Extractor
+    implementation "com.github.HaarigerHarald:android-youtubeExtractor:v1.7.0"
 }
 apply plugin: 'com.google.gms.google-services'
