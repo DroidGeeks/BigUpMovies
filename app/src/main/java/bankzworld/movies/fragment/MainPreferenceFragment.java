@@ -13,6 +13,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 
 import javax.inject.Inject;
 
@@ -24,6 +25,9 @@ public class MainPreferenceFragment extends PreferenceFragment {
 
     @Inject
     SharedPreferences preferences;
+
+    private FragmentListener fragmentListener = null;
+    private int listIndex = 0;
 
     @SuppressLint("ResourceType")
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -38,28 +42,37 @@ public class MainPreferenceFragment extends PreferenceFragment {
         // sort preference change listener
         bindPreferenceSummaryToValue(findPreference(getString(R.string.sort_key)));
 
+        //get the int key of saved category
+        listIndex = preferences.getInt(getString(R.string.sort_key), 0);
+
         final CheckBoxPreference switchPreference = (CheckBoxPreference) findPreference(getString(R.string.theme_key));
         switchPreference.setSummaryOn(getString(R.string.night));
         switchPreference.setSummaryOff(getString(R.string.day));
 
-        switchPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean isChecked = (boolean) newValue;
-                preferences.edit().putBoolean(getString(R.string.get_theme_mode), isChecked).apply();
-                restartActivity();
-                return true;
-            }
+        switchPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean isChecked = (boolean) newValue;
+            preferences.edit().putBoolean(getString(R.string.get_theme_mode), isChecked).apply();
+//            restartActivity();
+            fragmentListener.onThemeChanged(true);
+            return true;
         });
 
         // feedback preference click listener
         Preference myPref = findPreference(getString(R.string.key_send_feedback));
-        myPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
-                sendFeedback(getActivity());
-                return true;
-            }
+        myPref.setOnPreferenceClickListener(preference -> {
+            sendFeedback(getActivity());
+            return true;
         });
+    }
+
+    @Override
+    public void onAttach(Context context){
+        if(context instanceof FragmentListener){
+            fragmentListener = (FragmentListener)context;
+        }else{
+            throw new RuntimeException(context.toString() + "must implement FragmentListener");
+        }
+        super.onAttach(context);
     }
 
     private void restartActivity() {
@@ -88,12 +101,13 @@ public class MainPreferenceFragment extends PreferenceFragment {
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(stringValue);
                 // Set the summary to reflect the new value.
-                preference.setSummary(
-                        index >= 0
-                                ? listPreference.getEntries()[index]
-                                : null);
+                String summary = (index >= 0 ? listPreference.getEntries()[index].toString() : "");
+                preference.setSummary(TextUtils.isEmpty(summary)? null: summary);
                 // store in sharedPrefs
-                preferences.edit().putInt(getString(R.string.sort_key), index).apply();
+                if(index != listIndex){
+                    preferences.edit().putInt(getString(R.string.sort_key), index).apply();
+                    fragmentListener.onCategoryChanged(summary);
+                }
             } else {
                 preference.setSummary(stringValue);
             }
@@ -121,6 +135,11 @@ public class MainPreferenceFragment extends PreferenceFragment {
         intent.putExtra(Intent.EXTRA_SUBJECT, "Application Issue");
         intent.putExtra(Intent.EXTRA_TEXT, body);
         context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_client)));
+    }
+
+    public interface FragmentListener {
+        void onThemeChanged(boolean value);
+        void onCategoryChanged(String newCategory);
     }
 
 }

@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 28
@@ -15,6 +17,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
     }
 }
 
@@ -72,8 +78,15 @@ dependencies {
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     // for background executions
     implementation 'com.github.jbankz:AppExecutor:v1.0'
+
+    //okhttp logging
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
     
     // Youtube Extractor
     implementation "com.github.HaarigerHarald:android-youtubeExtractor:v1.7.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}

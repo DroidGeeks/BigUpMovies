@@ -1,13 +1,18 @@
 package bankzworld.movies.activity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +20,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +28,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.github.ybq.android.spinkit.SpinKitView;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +40,13 @@ import javax.inject.Inject;
 import bankzworld.movies.R;
 import bankzworld.movies.adapter.MovieAdapter;
 import bankzworld.movies.injection.DaggerApplication;
+import bankzworld.movies.listeners.NetworkErrorListener;
 import bankzworld.movies.listeners.NetworkResponseListeners;
 import bankzworld.movies.network.PaginationClient;
 import bankzworld.movies.network.Server;
 import bankzworld.movies.pojo.Responses;
 import bankzworld.movies.pojo.Results;
+import bankzworld.movies.util.Config;
 import bankzworld.movies.util.NetworkProvider;
 import bankzworld.movies.viewmodel.MoviesCategoryViewmodel;
 import butterknife.BindView;
@@ -48,7 +59,8 @@ import retrofit2.Retrofit;
 
 import static bankzworld.movies.util.Config.API_KEY;
 
-public class MainActivity extends AppCompatActivity implements NetworkResponseListeners, SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends AppCompatActivity implements
+        NetworkResponseListeners, SwipeRefreshLayout.OnRefreshListener, NetworkErrorListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Inject
@@ -73,12 +85,13 @@ public class MainActivity extends AppCompatActivity implements NetworkResponseLi
 
     MoviesCategoryViewmodel moviesCategoryViewmodel;
     List<Results> resultsList = new ArrayList<>();
-    private SpotsDialog spotsDialog;
+    static private SpotsDialog spotsDialog;
 
     private int pageNumber = 1;
     private boolean isLoading = true;
     private int pastVisibleItems, visibleItemCount, totalItemCount, previousTotal = 0;
     private int viewThreshHold = 20;
+    private int rCode = 12;
 
     private MovieAdapter movieAdapter;
     private List<Results> results = new ArrayList<>();
@@ -103,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements NetworkResponseLi
 
         setViews();
 
-        getMoviesOnline();
+        getMoviesOnline(false,true);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -139,23 +152,55 @@ public class MainActivity extends AppCompatActivity implements NetworkResponseLi
     }
 
     private void refreshSearch(String movie) {
-        if (NetworkProvider.isConnected(this)) {
-            networkLayout.setVisibility(View.INVISIBLE);
-            moviesCategoryViewmodel.getSearchedMovie(movie);
-        } else {
-            networkLayout.setVisibility(View.VISIBLE);
-            spotsDialog.hide();
-        }
+        networkLayout.setVisibility(View.INVISIBLE);
+        spotsDialog.show();
+        swipeRefreshLayout.setRefreshing(true);
+        moviesCategoryViewmodel.getSearchedMoviesLiveData(movie).observe(this, results -> {
+            if(results != null){
+                resultsList = results;
+                movieAdapter = new MovieAdapter(this, results);
+                movieAdapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(movieAdapter);
+            }else{
+                Toast.makeText(this,"No data found",Toast.LENGTH_SHORT).show();
+            }
+            spotsDialog.dismiss();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+//        if (NetworkProvider.isConnected(this)) {
+//            networkLayout.setVisibility(View.INVISIBLE);
+//            moviesCategoryViewmodel.getSearchedMovie(movie);
+//        } else {
+//            networkLayout.setVisibility(View.VISIBLE);
+//            spotsDialog.hide();
+//        }
     }
 
-    private void refresh(String movie) {
-        if (NetworkProvider.isConnected(this)) {
-            networkLayout.setVisibility(View.INVISIBLE);
-            moviesCategoryViewmodel.getMovies(movie, 1);
-        } else {
-            networkLayout.setVisibility(View.VISIBLE);
-            spotsDialog.hide();
-        }
+    private void refresh(String movie, boolean refresh, boolean showDialog) {
+        networkLayout.setVisibility(View.INVISIBLE);
+        swipeRefreshLayout.setRefreshing(true);
+        if(showDialog)
+            spotsDialog.show();
+        moviesCategoryViewmodel.getMoviesByCategory(movie,1,refresh).observe(this, results -> {
+            if (results != null) {
+                resultsList = results;
+                movieAdapter = new MovieAdapter(this, results);
+                //movieAdapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(movieAdapter);
+            }else {
+                Toast.makeText(this, "No data found", Toast.LENGTH_SHORT).show();
+            }
+            spotsDialog.dismiss();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
+//        if (NetworkProvider.isConnected(this)) {
+//            networkLayout.setVisibility(View.INVISIBLE);
+//            moviesCategoryViewmodel.getMovies(movie, 1);
+//        } else {
+//            networkLayout.setVisibility(View.VISIBLE);
+//            spotsDialog.hide();
+//        }
     }
 
     private void setViews() {
@@ -181,29 +226,29 @@ public class MainActivity extends AppCompatActivity implements NetworkResponseLi
         spotsDialog = new SpotsDialog(this);
     }
 
-    private boolean getMoviesOnline() {
+    private boolean getMoviesOnline(boolean refresh, boolean showDialog) {
         // get Item from preference
         int key = preferences.getInt(getString(R.string.sort_key), 0);
         switch (key) {
             case 0:
                 movie = "popular";
                 this.setTitle("Popular");
-                refresh("popular");
+                refresh("popular",refresh,showDialog);
                 break;
             case 1:
                 movie = "top_rated";
                 this.setTitle("Top Rated");
-                refresh("top_rated");
+                refresh("top_rated",refresh,showDialog);
                 break;
             case 2:
                 movie = "now_playing";
                 this.setTitle("Now Playing");
-                refresh("now_playing");
+                refresh("now_playing",refresh,showDialog);
                 break;
             case 3:
                 movie = "coming_soon";
                 this.setTitle("Coming Soon");
-                refresh("coming_soon");
+                refresh("coming_soon",refresh,showDialog);
                 break;
             default:
                 Log.e(TAG, "onCreate: error,");
@@ -211,19 +256,38 @@ public class MainActivity extends AppCompatActivity implements NetworkResponseLi
         return true;
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(FRAGMENT_KEY, FRAGMENT);
-        super.onSaveInstanceState(outState);
-    }
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        outState.putString(FRAGMENT_KEY, FRAGMENT);
+//        super.onSaveInstanceState(outState);
+//    }
+//
+//    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        if (savedInstanceState != null) {
+//            getMoviesOnline();
+//        }
+//        super.onRestoreInstanceState(savedInstanceState);
+//    }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            getMoviesOnline();
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == rCode && resultCode == Activity.RESULT_OK){
+            boolean isDirty = data.getBooleanExtra(Config.IS_DIRTY, false);
+            String newCategory = data.getStringExtra(Config.NEW_CATEGROY);
+            Log.e(this.getClass().getSimpleName(),"requestCode " + requestCode + " resultCode "
+                    + resultCode + " isDirty " + isDirty + " query " + newCategory);
+            if(isDirty){
+                this.recreate();
+            }
+            if(!TextUtils.isEmpty(newCategory)){
+                getMoviesOnline(true,false);
+            }
+        }else{
+            Log.e(this.getClass().getSimpleName(),"requestCode " + requestCode + "resultCode " + resultCode);
         }
-        super.onRestoreInstanceState(savedInstanceState);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -243,9 +307,9 @@ public class MainActivity extends AppCompatActivity implements NetworkResponseLi
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
         if (i == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            finish();
+
+            startActivityForResult(new Intent(this, SettingsActivity.class),rCode);
+            this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -332,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements NetworkResponseLi
 
     @Override
     public void onRefresh() {
-        getMoviesOnline();
+        getMoviesOnline(true,true);
     }
 
     private void pagination(String movie) {
@@ -355,6 +419,19 @@ public class MainActivity extends AppCompatActivity implements NetworkResponseLi
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 mSpinKitView.setVisibility(View.INVISIBLE);
             }
+        });
+    }
+
+    @Override
+    public void onError(@Nullable String msg){
+        this.runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
+    }
+
+    @Override
+    public void onBadInternet(@Nullable String msg) {
+        this.runOnUiThread(() -> {
+            networkLayout.setVisibility(View.VISIBLE);
+            spotsDialog.hide();
         });
     }
 }

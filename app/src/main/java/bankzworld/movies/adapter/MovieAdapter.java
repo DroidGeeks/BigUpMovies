@@ -45,7 +45,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull final MovieViewHolder holder, final int position) {
-        holder.mRating.setText(resultsList.get(position).getVoteAverage().toString());
+        holder.mRating.setText(String.valueOf(resultsList.get(position).getVoteAverage()));
 
         Glide.with(mContext).load(POSTER_PATH + resultsList.get(position)
                 .getPosterPath())
@@ -68,7 +68,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         @BindView(R.id.text_rating)
         TextView mRating;
 
-        public MovieViewHolder(View itemView) {
+        MovieViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
@@ -87,9 +87,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public void addMovies(List<Results> resultsList) {
-        for (Results results : resultsList) {
-            this.resultsList.add(results);
-        }
+        this.resultsList.addAll(resultsList);
         notifyDataSetChanged();
     }
 }
