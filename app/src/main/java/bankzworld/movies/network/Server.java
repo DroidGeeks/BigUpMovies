@@ -17,6 +17,10 @@ public interface Server {
     @GET("movie/{movie}")
     Call<Responses> getMovies(@Path("movie") String movie, @Query("api_key") String api_key, @Query("page=") int page);
 
+    @GET("movie/{category}")
+    Call<Responses> getMovieByCategory(@Path("category") String category,@Query("page") int page,
+                                     @Query("language") String lang, @Query("api_key") String apiKey);
+
     @GET
     Call<Responses> getPaginationMovies(@Url String url);
 
