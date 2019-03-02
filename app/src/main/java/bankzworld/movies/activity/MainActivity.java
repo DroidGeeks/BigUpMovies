@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -47,7 +46,6 @@ import bankzworld.movies.network.Server;
 import bankzworld.movies.pojo.Responses;
 import bankzworld.movies.pojo.Results;
 import bankzworld.movies.util.Config;
-import bankzworld.movies.util.NetworkProvider;
 import bankzworld.movies.viewmodel.MoviesCategoryViewmodel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -116,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements
 
         setViews();
 
-        getMoviesOnline(false,true);
+        getMoviesOnline(false, true);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -143,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements
 
             }
         });
-        
+
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
@@ -156,13 +154,13 @@ public class MainActivity extends AppCompatActivity implements
         spotsDialog.show();
         swipeRefreshLayout.setRefreshing(true);
         moviesCategoryViewmodel.getSearchedMoviesLiveData(movie).observe(this, results -> {
-            if(results != null){
+            if (results != null) {
                 resultsList = results;
                 movieAdapter = new MovieAdapter(this, results);
                 movieAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(movieAdapter);
-            }else{
-                Toast.makeText(this,"No data found",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "No data found", Toast.LENGTH_SHORT).show();
             }
             spotsDialog.dismiss();
             swipeRefreshLayout.setRefreshing(false);
@@ -179,15 +177,15 @@ public class MainActivity extends AppCompatActivity implements
     private void refresh(String movie, boolean refresh, boolean showDialog) {
         networkLayout.setVisibility(View.INVISIBLE);
         swipeRefreshLayout.setRefreshing(true);
-        if(showDialog)
+        if (showDialog)
             spotsDialog.show();
-        moviesCategoryViewmodel.getMoviesByCategory(movie,1,refresh).observe(this, results -> {
+        moviesCategoryViewmodel.getMoviesByCategory(movie, 1, refresh).observe(this, results -> {
             if (results != null) {
                 resultsList = results;
                 movieAdapter = new MovieAdapter(this, results);
                 //movieAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(movieAdapter);
-            }else {
+            } else {
                 Toast.makeText(this, "No data found", Toast.LENGTH_SHORT).show();
             }
             spotsDialog.dismiss();
@@ -233,22 +231,22 @@ public class MainActivity extends AppCompatActivity implements
             case 0:
                 movie = "popular";
                 this.setTitle("Popular");
-                refresh("popular",refresh,showDialog);
+                refresh("popular", refresh, showDialog);
                 break;
             case 1:
                 movie = "top_rated";
                 this.setTitle("Top Rated");
-                refresh("top_rated",refresh,showDialog);
+                refresh("top_rated", refresh, showDialog);
                 break;
             case 2:
                 movie = "now_playing";
                 this.setTitle("Now Playing");
-                refresh("now_playing",refresh,showDialog);
+                refresh("now_playing", refresh, showDialog);
                 break;
             case 3:
-                movie = "coming_soon";
-                this.setTitle("Coming Soon");
-                refresh("coming_soon",refresh,showDialog);
+                movie = "upcoming";
+                this.setTitle("Upcoming");
+                refresh("upcoming", refresh, showDialog);
                 break;
             default:
                 Log.e(TAG, "onCreate: error,");
@@ -271,20 +269,20 @@ public class MainActivity extends AppCompatActivity implements
 //    }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == rCode && resultCode == Activity.RESULT_OK){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == rCode && resultCode == Activity.RESULT_OK) {
             boolean isDirty = data.getBooleanExtra(Config.IS_DIRTY, false);
             String newCategory = data.getStringExtra(Config.NEW_CATEGROY);
-            Log.e(this.getClass().getSimpleName(),"requestCode " + requestCode + " resultCode "
+            Log.e(this.getClass().getSimpleName(), "requestCode " + requestCode + " resultCode "
                     + resultCode + " isDirty " + isDirty + " query " + newCategory);
-            if(isDirty){
+            if (isDirty) {
                 this.recreate();
             }
-            if(!TextUtils.isEmpty(newCategory)){
-                getMoviesOnline(true,false);
+            if (!TextUtils.isEmpty(newCategory)) {
+                getMoviesOnline(true, false);
             }
-        }else{
-            Log.e(this.getClass().getSimpleName(),"requestCode " + requestCode + "resultCode " + resultCode);
+        } else {
+            Log.e(this.getClass().getSimpleName(), "requestCode " + requestCode + "resultCode " + resultCode);
         }
     }
 
@@ -308,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements
         }
         if (i == R.id.action_settings) {
 
-            startActivityForResult(new Intent(this, SettingsActivity.class),rCode);
+            startActivityForResult(new Intent(this, SettingsActivity.class), rCode);
             this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
         return super.onOptionsItemSelected(item);
@@ -396,7 +394,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onRefresh() {
-        getMoviesOnline(true,true);
+        getMoviesOnline(true, true);
     }
 
     private void pagination(String movie) {
@@ -423,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onError(@Nullable String msg){
+    public void onError(@Nullable String msg) {
         this.runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
     }
 
