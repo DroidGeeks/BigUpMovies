@@ -51,8 +51,8 @@ dependencies {
     compileOnly 'javax.annotation:jsr250-api:1.0'
 
     // firebase
-    implementation 'com.google.firebase:firebase-messaging:17.3.4'
-    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.google.firebase:firebase-messaging:17.4.0'
+    implementation 'com.google.firebase:firebase-core:16.0.7'
 
     // retrofit
     implementation 'com.google.code.gson:gson:2.8.5'
@@ -67,7 +67,7 @@ dependencies {
     // image library
     implementation 'com.flaviofaria:kenburnsview:1.0.7'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
-    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
 
     // progress bar library
     implementation 'com.wang.avi:library:2.1.3'
