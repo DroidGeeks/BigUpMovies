@@ -9,6 +9,7 @@ A movie application. Get latest, top rated, upcoming and even theater movies alo
 5.  Dagger – For dependency injection
 6.  Retrofit – For networking
 7.  YoutubeApi – For playing movie trailers
+8. YoutubExtractor - For downloading youtube videos in app
 
 # Features
 1.  Sort movies according to user preference (Popular, Top Rated, Theatre or even Up coming movies)
