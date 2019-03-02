@@ -5,11 +5,10 @@ A movie application. Get latest, top rated, upcoming and even theater movies alo
 1.  ROOM – A database for offline persistent
 2.  Model – the pojo
 3.  Viewmodel – For UI awarenes
-4.  ButterKnife – For initializing views
+4.	ButterKnife – For views binding
 5.  Dagger – For dependency injection
 6.  Retrofit – For networking
-7.	ButterKnife – For views binding
-8.  YoutubeApi – For playing movie trailers
+7.  YoutubeApi – For playing movie trailers
 
 # Features
 1.  Sort movies according to user preference (Popular, Top Rated, Theatre or even Up coming movies)
