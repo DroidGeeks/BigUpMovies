@@ -25,6 +25,11 @@ In other to finish build this, you’ll need the following
 1.	A computer (Laptop or Desktop) 
 2.	Android studios 3.0 up to the latest
 
+# A Big Shout Out
+This is to those who has contributed one way or the other and to more who are yet to contribute
+1. https://github.com/jideGuru
+2. https://github.com/arinzedroid
+
 Note: This application is still under progress, but i hope to get u a better update soon.
 follow to get notified when a new commit is been updated.
 
